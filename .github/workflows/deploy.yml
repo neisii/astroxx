@@ -1,40 +1,39 @@
 # .github/workflows/deploy.yml
-name: Deploy Astro site to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write  # github-pages branch에 write 권한
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+          cache: 'pnpm'
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build site
-        run: pnpm run build
+      - name: Build project
+        run: pnpm build
 
       - name: Deploy to GitHub Pages
         uses: withastro/action@v2
         with:
           site: ./dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
