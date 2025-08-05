@@ -1,0 +1,17 @@
+---
+// src/layouts/PostLayout.astro
+
+const { title } = Astro.props;
+---
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>{title} | Astroxx</title>
+</head>
+<body>
+<main class="prose mx-auto p-4">
+  <slot />
+</main>
+</body>
+</html>

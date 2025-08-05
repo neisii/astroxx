@@ -1,0 +1,23 @@
+---
+import Toc from './Toc.astro';
+import '../styles/global.css';
+const { title, date, tags, children } = Astro.props;
+---
+<article class="prose max-w-screen-md mx-auto px-4 py-12">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold">{title}</h1>
+    <p class="text-sm text-gray-500">{date}</p>
+    <div class="mt-2 flex gap-2 flex-wrap">
+      {tags.map(tag => <span class="text-xs bg-gray-100 px-2 py-1 rounded">#{tag}</span>)}
+    </div>
+  </header>
+
+  <div class="flex flex-col md:flex-row gap-8">
+    <div class="flex-1">
+      {children}
+    </div>
+    <aside class="w-full md:w-64">
+      <Toc />
+    </aside>
+  </div>
+</article>

@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/styles/global.css */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+}

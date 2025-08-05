@@ -1,0 +1,36 @@
+---
+import { getCollection, getEntryBySlug } from "astro:content";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug("posts", slug);
+
+if (!post) {
+  throw new Error(`Post not found for slug: ${slug}`);
+}
+
+console.log('🧪 post =', post);
+const rendered = await post.render(); // ✅ 이 줄이 꼭 필요!!
+---
+
+<BaseLayout title={post.data.title}>
+
+<article>
+  <h1>{post.data.title}</h1>
+  <p><i>{post.data.date}</i></p>
+
+  <rendered.Content />
+
+  <!--{post.render() ? (-->
+  <!--    <Fragment set:component={rendered} />-->
+  <!--) : (-->
+  <!--    <p style="color: red;">post.render() is undefined 😭</p>-->
+  <!--)}-->
+</article>
