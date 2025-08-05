@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write  # github-pages branch에 write 권한
+  contents: write
 
 jobs:
   build:
@@ -20,12 +20,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-#          cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 8 # 👈 반드시 명시해야 함!
           run_install: true
 
       - name: Build project
@@ -34,6 +33,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: withastro/action@v2
         with:
-          site: ./dist
+          path: ./dist # 👈 site ❌ → path ✅
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
