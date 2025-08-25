@@ -1,0 +1,12 @@
+---
+const { title = "Astroxx Blog", description = "Zenn 스타일의 미니 블로그", url = Astro.site } = Astro.props;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="article" />
+<meta property="og:url" content={url} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href={`${Astro.base}/favicon.svg`} />
+

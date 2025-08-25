@@ -6,3 +6,8 @@
 body {
   font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
 }
+
+/* Zenn-ish 톤 다운 */
+.prose :where(h1,h2,h3,h4){ scroll-margin-top: 96px; }
+.prose :where(a){ text-decoration: none; }
+.prose :where(a:hover){ text-decoration: underline; }

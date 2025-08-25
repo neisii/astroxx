@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+
+  // 모든 태그 수집 → 중복 제거
+  const tagSet = new Set<string>();
+  for (const p of posts) {
+    (p.data.tags ?? []).forEach((t: string) => tagSet.add(t));
+  }
+
+  // 각 태그별 정적 경로 생성
+  return Array.from(tagSet).map((tag) => ({
+    params: { tag }, // /tags/<tag>/
+    props: { tag },  // 페이지 본문에서 쓰도록 전달
+  }));
+}
+
+const { tag } = Astro.props as { tag: string };
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.tags?.includes(tag))
+  .sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+---
+
+<BaseLayout title={`#${tag} | Astroxx`}>
+  <section class="max-w-screen-md mx-auto">
+    <h1 class="!mb-6">#{tag}</h1>
+    {posts.length === 0 ? (
+      <p>해당 태그의 글이 없어요.</p>
+    ) : (
+      <ul class="not-prose divide-y">
+        {posts.map((p) => (
+          <li class="py-4">
+            <a class="block hover:underline" href={`/posts/${p.slug}/`}>
+              <h2 class="text-lg font-semibold">{p.data.title}</h2>
+            </a>
+            <p class="text-sm text-gray-500">{p.data.date}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>
+

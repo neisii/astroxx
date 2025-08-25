@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntryBySlug } from "astro:content";
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostLayout from '../../layouts/PostLayout.astro';
+import Toc from '../../components/Toc.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -11,26 +12,31 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const post = await getEntryBySlug("posts", slug);
+if (!post) throw new Error(`Post not found for slug: ${slug}`);
 
-if (!post) {
-  throw new Error(`Post not found for slug: ${slug}`);
-}
-
-console.log('🧪 post =', post);
-const rendered = await post.render(); // ✅ 이 줄이 꼭 필요!!
+const rendered = await post.render(); // { Content, headings, ... }
+const { Content, headings } = rendered;
 ---
+<PostLayout title={post.data.title} description={post.data.description ?? ""}>
+  <article class="max-w-screen-md mx-auto">
+    <header class="mb-8">
+      <h1 class="!mb-2">{post.data.title}</h1>
+      <p class="text-sm text-gray-500">{post.data.date}</p>
+      {post.data.tags?.length && (
+        <div class="mt-2 flex gap-2 flex-wrap">
+          {post.data.tags.map((t) => <a href={`/tags/${t}/`} class="text-xs bg-gray-100 px-2 py-1 rounded hover:underline">#{t}</a>)}
+        </div>
+      )}
+    </header>
 
-<BaseLayout title={post.data.title}>
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="flex-1">
+        <Content />
+      </div>
+      <aside class="w-full md:w-64">
+        <Toc headings={headings} />
+      </aside>
+    </div>
+  </article>
+</PostLayout>
 
-<article>
-  <h1>{post.data.title}</h1>
-  <p><i>{post.data.date}</i></p>
-
-  <rendered.Content />
-
-  <!--{post.render() ? (-->
-  <!--    <Fragment set:component={rendered} />-->
-  <!--) : (-->
-  <!--    <p style="color: red;">post.render() is undefined 😭</p>-->
-  <!--)}-->
-</article>
