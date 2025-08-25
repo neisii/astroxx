@@ -1,16 +1,28 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
+const posts = (await getCollection('posts'))
+  .sort((a,b) => (a.data.date < b.data.date ? 1 : -1));
 ---
+<BaseLayout title="Astroxx Blog">
+  <section class="max-w-screen-md mx-auto">
+    <h1 class="!mb-6">Posts</h1>
+    <ul class="not-prose divide-y">
+      {posts.map(p => (
+        <li class="py-4">
+          <a class="block hover:underline" href={`/posts/${p.slug}/`}>
+            <h2 class="text-lg font-semibold">{p.data.title}</h2>
+          </a>
+          <p class="text-sm text-gray-500">{p.data.date}</p>
+          {p.data.tags?.length && (
+            <div class="mt-1 flex gap-2 flex-wrap">
+              {p.data.tags.map(t => <a href={`/tags/${t}/`} class="text-xs bg-gray-100 px-2 py-1 rounded hover:underline">#{t}</a>)}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href={`${Astro.base}/favicon.svg`} />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>

@@ -1,17 +1,16 @@
 ---
-// src/layouts/BaseLayout.astro
-const { title = "Astroxx Blog" } = Astro.props;
+const { title = "Astroxx Blog", description = "Zenn 스타일의 미니 블로그" } = Astro.props;
 ---
-
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-</head>
-<body>
-<main class="prose mx-auto p-4">
-  <slot />
-</main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white">
+    <main class="prose prose-neutral mx-auto px-4 py-8">
+      <slot />
+    </main>
+  </body>
 </html>
+
