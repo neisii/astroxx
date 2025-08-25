@@ -11,3 +11,35 @@ body {
 .prose :where(h1,h2,h3,h4){ scroll-margin-top: 96px; }
 .prose :where(a){ text-decoration: none; }
 .prose :where(a:hover){ text-decoration: underline; }
+
+/* Copy button for code blocks */
+pre .copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.0;
+  transition: opacity .15s ease, transform .05s ease, background .15s ease;
+}
+
+pre:hover .copy-btn {
+  opacity: 1;
+}
+
+pre .copy-btn:active {
+  transform: translateY(1px);
+}
+
+pre .copy-btn.copied {
+  background: rgba(16, 185, 129, 0.9); /* emerald-ish */
+}
+
