@@ -11,6 +11,9 @@ const { title = "Astroxx Blog", description = "Zenn 스타일의 미니 블로�
     <main class="prose prose-neutral mx-auto px-4 py-8">
       <slot />
     </main>
+
+    <!-- 코드 복사 버튼 스크립트 -->
+    <script type="module" src={Astro.base + 'scripts/copy-code.js'}></script>
   </body>
 </html>
 
